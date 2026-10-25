@@ -1,0 +1,14 @@
+$ tshark -i lo -f "icmp" -a duration:6 -w icmp-only.pcapng   (while a ping AND a web fetch both ran)
+$ capinfos -c icmp-only.pcapng
+File name:           icmp-only.pcapng
+Number of packets:   4
+$ tshark -r icmp-only.pcapng -q -z io,phs
+
+===================================================================
+Protocol Hierarchy Statistics
+Filter: 
+
+eth                                      frames:4 bytes:392
+  ip                                     frames:4 bytes:392
+    icmp                                 frames:4 bytes:392
+===================================================================

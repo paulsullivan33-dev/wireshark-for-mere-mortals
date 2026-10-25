@@ -1,0 +1,20 @@
+$ tshark --version
+TShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).
+$ tshark -D
+1. host0
+2. any
+3. lo (Loopback)
+4. bluetooth-monitor
+5. nflog
+6. nfqueue
+7. dbus-system
+8. dbus-session
+9. ciscodump (Cisco remote capture)
+10. dpauxmon (DisplayPort AUX channel monitor capture)
+11. randpkt (Random packet generator)
+12. sdjournal (systemd Journal Export)
+13. sshdump (SSH remote capture)
+14. udpdump (UDP Listener remote capture)
+15. wifidump (Wi-Fi remote capture)
+$ dumpcap --version
+Dumpcap (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).

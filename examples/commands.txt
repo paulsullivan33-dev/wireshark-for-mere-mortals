@@ -1,0 +1,58 @@
+Wireshark and tshark — the distilled commands
+====================================================================
+Placeholders: <file> is a capture file
+(lab.pcapng in the guide); <iface> is an
+interface name from tshark -D (lo, eth0).
+
+FIRST CONTACT (chapters 3-4)
+--------------------------------------------------------------------
+  tshark --version
+  tshark -D                          # interfaces you can capture
+  getcap "$(command -v dumpcap)"     # Linux: capture rights receipt
+  tshark -i <iface> -a duration:10 -w first.pcapng
+  tshark -r <file>                   # the packet list
+  capinfos <file>                    # who the file is
+
+READING (chapters 5-6)
+--------------------------------------------------------------------
+  tshark -r <file> -Y "frame.number == 8" -V
+                                     # one frame, full tree
+  tshark -r <file> -Y "icmp"
+  tshark -r <file> -Y "ip.addr == 192.168.1.20"
+  tshark -r <file> -Y "tcp.port == 8080"
+  tshark -r <file> -Y "tcp.flags.reset == 1"
+  tshark -r <file> -Y "tcp.analysis.retransmission"
+  tshark -r <file> -Y "not tcp and not icmp" | wc -l
+
+CAPTURE FILTERS (chapter 7 — BPF syntax, at capture time)
+--------------------------------------------------------------------
+  tshark -i <iface> -f "host 192.168.1.20" -w one-host.pcapng
+  tshark -i <iface> -f "icmp" -a duration:6 -w pings.pcapng
+  tshark -i <iface> -f "tcp port 80 or tcp port 443" -w web.pcapng
+
+CONVERSATIONS AND STATISTICS (chapters 8-9)
+--------------------------------------------------------------------
+  tshark -r <file> -q -z follow,tcp,ascii,0
+                                     # stream 0, reassembled
+  tshark -r <file> -q -z conv,tcp
+  tshark -r <file> -q -z endpoints,ipv4
+  tshark -r <file> -q -z io,phs      # protocol hierarchy
+  tshark -r <file> -Y "http.request" -T fields \
+    -e frame.number -e http.request.method -e http.request.uri
+  tshark -r <file> -Y "frame.number == 42" -T json
+
+FILE TOOLS (chapter 10)
+--------------------------------------------------------------------
+  capinfos -c *.pcapng               # packet counts, many files
+  editcap -r <file> first-five.pcapng 1-5
+                                     # keep packets 1-5
+  editcap -A "2026-10-25 00:27:15" <file> late.pcapng
+                                     # keep from a wall-clock time
+  editcap -D 0 <file> deduped.pcapng # drop exact duplicates
+  mergecap -w merged.pcapng a.pcapng b.pcapng
+  text2pcap -o hex -e 0x800 hexdump.txt from-hex.pcapng
+
+LONG CAPTURES (chapter 9)
+--------------------------------------------------------------------
+  dumpcap -i <iface> -b filesize:100000 -b files:10 \
+    -w watch.pcapng                  # ring buffer, 10 x ~100 MB

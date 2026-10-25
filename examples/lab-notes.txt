@@ -1,0 +1,101 @@
+The lab — one real install, on a machine with no screen
+====================================================================
+
+The lab is Wireshark as Ubuntu ships it,
+installed with apt on the build machine
+(an Ubuntu 24.04 sandbox; kernel and CPU
+details are recorded inside the capture
+file itself, where capinfos shows them):
+
+  * tshark 4.2.2 (package
+    4.2.2-1.1build3), with dumpcap,
+    capinfos, editcap, mergecap and
+    text2pcap — the command-line half of
+    the crew. The graphical window was
+    NOT installed and NOT run: the
+    machine has no display. Everything
+    the window is said to do in this
+    guide is taught from the project's
+    documentation and labelled as such;
+    everything about packets was done
+    for real, below.
+
+The install's accident, kept as evidence
+(transcript t01):
+
+  * The package install ran unattended,
+    so Debian's "may non-superusers
+    capture packets?" was answered no
+    (wireshark-common/install-setuid:
+    false). Result: no wireshark group,
+    no capabilities on dumpcap.
+  * The lab applied chapter 3's setup
+    by hand — addgroup --system
+    wireshark; chgrp + chmod 750 on
+    /usr/bin/dumpcap; setcap
+    cap_net_admin,cap_net_raw+eip —
+    and verified the receipts: group
+    exists (GID 115), dumpcap is
+    root:wireshark 0750, getcap prints
+    cap_net_admin,cap_net_raw=eip.
+  * Captures then ran as root anyway
+    (the sandbox's only login), which
+    tshark warns about on every run.
+    The permission setup is therefore
+    verified as configuration, not
+    exercised as an unprivileged
+    capture.
+
+The capture itself (transcripts
+t02-t03):
+
+  * One 12-second capture on the
+    loopback interface (lo) into
+    wireshark-lab/lab.pcapng: 46
+    packets, 4793 bytes of data, 2.37
+    seconds from first packet to last.
+  * Traffic was generated on purpose
+    against a throwaway Python web
+    server on 127.0.0.1:8080 serving
+    two static pages written for the
+    lab (a tea room that exists only on
+    loopback): 8 ICMP packets — four
+    request/reply pairs from the two
+    ping runs (the first run asked for
+    three exchanges; its first exchange
+    predates the capture's first
+    recorded frame, as the sequence
+    numbers in t03 show), three
+    complete HTTP fetches (two 200s,
+    one honest 404), and one connection
+    to port 9, refused with a RST.
+  * Loopback did NOT double the
+    packets on this system — each of
+    the 46 appears once. Its other
+    simplifications are named in
+    chapters 4, 5 and 8: all-zero MAC
+    addresses, one address for both
+    ends of everything, and an endpoint
+    table that counts each packet twice
+    (once per role) for that reason.
+
+Exercised on the real file (transcripts
+t04-t09): full dissection of one frame;
+eight display filters with counts;
+follow-stream reassembly of stream 0;
+conversation, endpoint and protocol-
+hierarchy statistics; field extraction
+and JSON output; capinfos; editcap by
+packet range and by wall-clock time;
+mergecap (5 + 4 = 9 packets); text2pcap
+from a hand-written hex header; and a
+second capture under the BPF capture
+filter "icmp" which recorded exactly
+the 4 ping packets while a web fetch
+ran unrecorded beside them.
+
+Nothing in the lab is modelled on any
+real person, organisation or event; the
+web pages are fiction for readers to
+reproduce, and every address in the
+capture is 127.0.0.1.

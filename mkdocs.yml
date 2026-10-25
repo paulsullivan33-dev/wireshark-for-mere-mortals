@@ -1,0 +1,28 @@
+site_name: Wireshark for Mere Mortals
+site_description: Seeing the packets your network actually carries. Capturing traffic with Wireshark and tshark, reading one packet layer by layer, filtering away the noise, following a whole conversation, and knowing what no capture can ever show you.
+site_url: https://paulsullivan33-dev.github.io/wireshark-for-mere-mortals/
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Wireshark Is: what-wireshark-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Wireshark: installing-wireshark.md
+  - Your First Capture: your-first-capture.md
+  - Reading a Packet: reading-a-packet.md
+  - Display Filters: display-filters.md
+  - Capture Filters: capture-filters.md
+  - Following Conversations: following-conversations.md
+  - TShark at the Command Line: tshark.md
+  - Working with Capture Files: capture-files.md
+  - Names and Colour: names-and-colour.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

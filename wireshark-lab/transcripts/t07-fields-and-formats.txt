@@ -1,0 +1,40 @@
+$ tshark -r lab.pcapng -Y "http.request" -T fields -e frame.number -e http.request.method -e http.request.uri -e http.host
+8	GET	/	127.0.0.1:8080
+20	GET	/menu.html	127.0.0.1:8080
+32	GET	/gone.html	127.0.0.1:8080
+$ tshark -r lab.pcapng -Y "icmp" -T fields -e frame.number -e icmp.type -e icmp.seq | head -4
+1	8	2
+2	0	2
+3	8	3
+4	0	3
+$ tshark -r lab.pcapng -Y "frame.number == 42" -T json | head -30
+[
+  {
+    "_index": "packets-2026-10-25",
+    "_type": "doc",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.section_number": "1",
+          "frame.interface_id": "0",
+          "frame.interface_id_tree": {
+            "frame.interface_name": "lo"
+          },
+          "frame.encap_type": "1",
+          "frame.time": "Oct 25, 2026 00:27:14.991972838 UTC",
+          "frame.time_utc": "Oct 25, 2026 00:27:14.991972838 UTC",
+          "frame.time_epoch": "1792888034.991972838",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_delta": "0.000012018",
+          "frame.time_delta_displayed": "0.000000000",
+          "frame.time_relative": "1.298774362",
+          "frame.number": "42",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "00:00:00:00:00:00",

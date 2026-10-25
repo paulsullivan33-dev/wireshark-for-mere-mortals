@@ -1,0 +1,64 @@
+$ tshark -r lab.pcapng -q -z follow,tcp,ascii,0
+
+===================================================================
+Follow: tcp,ascii
+Filter: tcp.stream eq 0
+Node 0: 127.0.0.1:33368
+Node 1: 127.0.0.1:8080
+77
+GET / HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+	186
+HTTP/1.0 200 OK
+Server: SimpleHTTP/0.6 Python/3.12.3
+Date: Sun, 25 Oct 2026 00:27:14 GMT
+Content-type: text/html
+Content-Length: 181
+Last-Modified: Sun, 25 Oct 2026 00:27:05 GMT
+
+
+	181
+<!DOCTYPE html>
+<html><head><title>Loopback Tea Room</title></head>
+<body><h1>Loopback Tea Room</h1>
+<p>A page served only to this machine, for capture practice.</p>
+</body></html>
+
+===================================================================
+
+$ tshark -r lab.pcapng -q -z conv,tcp
+================================================================================
+TCP Conversations
+Filter:<No Filter>
+                                                           |       <-      | |       ->      | |     Total     |    Relative    |   Duration   |
+                                                           | Frames  Bytes | | Frames  Bytes | | Frames  Bytes |      Start     |              |
+127.0.0.1:33368            <-> 127.0.0.1:8080                   6 771 bytes       6 481 bytes      12 1252 bytes     1.060911089         0.0107
+127.0.0.1:33370            <-> 127.0.0.1:8080                   6 725 bytes       6 490 bytes      12 1215 bytes     1.178234794         0.0101
+127.0.0.1:33378            <-> 127.0.0.1:8080                   6 924 bytes       6 490 bytes      12 1414 bytes     1.226622996         0.0120
+127.0.0.1:58002            <-> 127.0.0.1:9                      1 54 bytes        1 74 bytes        2 128 bytes     1.298762344         0.0000
+================================================================================
+$ tshark -r lab.pcapng -q -z io,phs
+
+===================================================================
+Protocol Hierarchy Statistics
+Filter: 
+
+eth                                      frames:46 bytes:4793
+  ip                                     frames:46 bytes:4793
+    icmp                                 frames:8 bytes:784
+    tcp                                  frames:38 bytes:4009
+      http                               frames:6 bytes:1296
+        data-text-lines                  frames:3 bytes:849
+          tcp.segments                   frames:3 bytes:849
+===================================================================
+$ tshark -r lab.pcapng -q -z endpoints,ipv4
+================================================================================
+IPv4 Endpoints
+Filter:<No Filter>
+                       |  Packets  | |  Bytes  | | Tx Packets | | Tx Bytes | | Rx Packets | | Rx Bytes |
+127.0.0.1                     92          9586         46            4793          46            4793   
+================================================================================

@@ -1,0 +1,14 @@
+$ tshark -r lab.pcapng -Y "icmp" | wc -l
+8
+$ tshark -r lab.pcapng -Y "http" | wc -l
+6
+$ tshark -r lab.pcapng -Y "tcp.port == 8080" | wc -l
+36
+$ tshark -r lab.pcapng -Y "tcp.flags.reset == 1"
+   42 1.298774362    127.0.0.1 → 127.0.0.1    TCP 54 9 → 58002 [RST, ACK] Seq=1 Ack=1 Win=0 Len=0
+$ tshark -r lab.pcapng -Y "http.response.code == 404"
+   36 1.238256446    127.0.0.1 → 127.0.0.1    HTTP 401 HTTP/1.0 404 File not found  (text/html)
+$ tshark -r lab.pcapng -Y "not tcp and not icmp" | wc -l
+0
+$ tshark -r lab.pcapng -Y "frame.len > 200" | wc -l
+6

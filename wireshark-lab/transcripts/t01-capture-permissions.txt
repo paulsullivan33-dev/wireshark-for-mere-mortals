@@ -1,0 +1,19 @@
+# State right after the noninteractive package install:
+$ debconf-show wireshark-common | grep install-setuid
+  wireshark-common/install-setuid: false
+$ getcap /usr/bin/dumpcap   (no output = no capabilities set)
+$ getent group wireshark   (no output = group not created)
+
+# Applying the documented setup by hand:
+$ addgroup --system wireshark
+info: Adding group `wireshark' (GID 115) ...
+$ chgrp wireshark /usr/bin/dumpcap; chmod 750 /usr/bin/dumpcap
+$ setcap cap_net_admin,cap_net_raw+eip /usr/bin/dumpcap
+
+# The receipts:
+$ ls -l /usr/bin/dumpcap
+-rwxr-x--- 1 root wireshark 229112 Apr 16  2024 /usr/bin/dumpcap
+$ getcap /usr/bin/dumpcap
+/usr/bin/dumpcap cap_net_admin,cap_net_raw=eip
+$ getent group wireshark
+wireshark:x:115:

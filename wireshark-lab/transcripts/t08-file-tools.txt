@@ -1,0 +1,52 @@
+$ capinfos lab.pcapng
+File name:           lab.pcapng
+File type:           Wireshark/... - pcapng
+File encapsulation:  Ethernet
+File timestamp precision:  nanoseconds (9)
+Packet size limit:   file hdr: (not set)
+Number of packets:   46
+File size:           6708 bytes
+Data size:           4793 bytes
+Capture duration:    2.369972170 seconds
+First packet time:   2026-10-25 00:27:13.693198476
+Last packet time:    2026-10-25 00:27:16.063170646
+Data byte rate:      2022 bytes/s
+Data bit rate:       16 kbps
+Average packet size: 104.20 bytes
+Average packet rate: 19 packets/s
+SHA256:              acb8d9f2a67ac3dfc1cdd41ec95082535c62d58b1379c266c0283b3f31c26ddf
+SHA1:                8ddd8783f41cd00871957a3669e3d81c551a5c42
+Strict time order:   True
+Capture hardware:    AMD EPYC 9D25 126-Core Processor (with SSE4.2)
+Capture oper-sys:    Linux 7.0.0-39-generic
+Capture application: Dumpcap (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3)
+Number of interfaces in file: 1
+Interface #0 info:
+                     Name = lo
+                     Encapsulation = Ethernet (1 - ether)
+                     Capture length = 262144
+                     Time precision = nanoseconds (9)
+                     Time ticks per second = 1000000000
+                     Time resolution = 0x09
+                     Operating system = Linux 7.0.0-39-generic
+                     Number of stat entries = 1
+                     Number of packets = 46
+$ editcap -r lab.pcapng first-five.pcapng 1-5    # keep packets 1-5 only
+$ capinfos -c first-five.pcapng
+File name:           first-five.pcapng
+Number of packets:   5
+$ editcap -A "2026-10-25 00:27:15" lab.pcapng late.pcapng    # keep packets at or after a wall-clock time
+$ capinfos -c late.pcapng
+File name:           late.pcapng
+Number of packets:   4
+$ mergecap -w merged.pcapng first-five.pcapng late.pcapng
+$ capinfos -c merged.pcapng
+File name:           merged.pcapng
+Number of packets:   9
+$ cat hexdump.txt
+000000 45 00 00 3c 1c 46 40 00 40 06 b1 e6 ac 10 0a 63 ac 10 0a 0c
+$ text2pcap -o hex -e 0x800 hexdump.txt from-hex.pcapng
+Read 1 potential packet, wrote 1 packet (376 bytes including overhead).
+$ capinfos -c from-hex.pcapng
+File name:           from-hex.pcapng
+Number of packets:   1
