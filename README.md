@@ -177,3 +177,19 @@ lab's transcripts live in
 `wireshark-lab/transcripts/`, the lab
 capture itself beside them, and its
 notes are `examples/lab-notes.txt`.
+
+---
+
+## Part of the series
+
+This guide is one of the [For Mere Mortals](https://paulsullivan33-dev.github.io/mere-mortals/) guides: plain-language guides to the tools programmers and makers use.
+
+Related guides:
+
+- [tcpdump for Mere Mortals](https://paulsullivan33-dev.github.io/tcpdump-for-mere-mortals/)
+- [Nmap for Mere Mortals](https://paulsullivan33-dev.github.io/nmap-for-mere-mortals/)
+- [mitmproxy for Mere Mortals](https://paulsullivan33-dev.github.io/mitmproxy-for-mere-mortals/)
+
+## License
+
+The writing in this guide is licensed under [CC BY 4.0](https://github.com/paulsullivan33-dev/wireshark-for-mere-mortals/blob/main/LICENSE). Code examples and lab scripts are licensed under the [MIT License](https://github.com/paulsullivan33-dev/wireshark-for-mere-mortals/blob/main/LICENSE-CODE).
